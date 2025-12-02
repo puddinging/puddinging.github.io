@@ -1,8 +1,423 @@
-<p>Hello 大家好</p>
-<p>我是霸都丶傲天，这是我的个人网站。 </p>
-<p>很高兴你来到这里, 你可以在以下的网站找到我</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💌 我的情书</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<ul>
-  <li> <a href="">知乎</a> </li>
-  <li> <a href="">我的博客(已经不更细了,现在在知乎写文章)</a> </li>
-</ul>
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 飘落的心形装饰 */
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #d63384;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        .letter-form {
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #d63384;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+        }
+
+        textarea {
+            min-height: 400px;
+            resize: vertical;
+            line-height: 1.8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .saved-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 10px;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .decorative-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d63384, transparent);
+            margin: 30px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 飘落的心形装饰 -->
+    <div id="hearts-container"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>💌 我的情书</h1>
+            <p>用文字表达你心中最真挚的情感</p>
+            <div class="decorative-line"></div>
+        </div>
+
+        <form class="letter-form" id="letterForm">
+            <div class="form-group">
+                <label for="recipient">致：</label>
+                <input type="text" id="recipient" name="recipient" placeholder="输入收信人的名字..." />
+            </div>
+
+            <div class="form-group">
+                <label for="sender">来自：</label>
+                <input type="text" id="sender" name="sender" placeholder="输入你的名字..." />
+            </div>
+
+            <div class="form-group">
+                <label for="letter">情书内容：</label>
+                <textarea id="letter" name="letter" placeholder="在这里写下你的情书...&#10;&#10;让每一个字都充满爱意，让每一句话都传递温暖。&#10;这是属于你们的浪漫时刻..."></textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-save" onclick="saveLetter()">💾 保存</button>
+                <button type="button" class="btn-clear" onclick="clearLetter()">🗑️ 清空</button>
+                <button type="button" class="btn-print" onclick="printLetter()">🖨️ 打印</button>
+            </div>
+
+            <div class="saved-message" id="savedMessage">
+                ✓ 情书已保存到本地存储！
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 创建飘落的心形
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts-container');
+            const hearts = ['💖', '💕', '💗', '💓', '💝', '💞', '💟'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                heartsContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+
+        // 保存情书到本地存储
+        function saveLetter() {
+            const recipient = document.getElementById('recipient').value;
+            const sender = document.getElementById('sender').value;
+            const letter = document.getElementById('letter').value;
+
+            const letterData = {
+                recipient: recipient,
+                sender: sender,
+                letter: letter,
+                date: new Date().toLocaleString('zh-CN')
+            };
+
+            localStorage.setItem('loveLetter', JSON.stringify(letterData));
+            
+            // 显示保存成功消息
+            const message = document.getElementById('savedMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+
+        // 清空情书
+        function clearLetter() {
+            if (confirm('确定要清空所有内容吗？')) {
+                document.getElementById('recipient').value = '';
+                document.getElementById('sender').value = '';
+                document.getElementById('letter').value = '';
+            }
+        }
+
+        // 打印情书
+        function printLetter() {
+            const recipient = document.getElementById('recipient').value;
+            const sender = document.getElementById('sender').value;
+            const letter = document.getElementById('letter').value;
+
+            if (!recipient || !sender || !letter) {
+                alert('请先填写完整的情书内容！');
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>我的情书</title>
+                    <style>
+                        body {
+                            font-family: 'Georgia', serif;
+                            max-width: 800px;
+                            margin: 50px auto;
+                            padding: 40px;
+                            line-height: 2;
+                            color: #333;
+                        }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 40px;
+                            border-bottom: 2px solid #d63384;
+                            padding-bottom: 20px;
+                        }
+                        .recipient {
+                            font-size: 1.5em;
+                            margin-bottom: 20px;
+                        }
+                        .letter-content {
+                            font-size: 1.1em;
+                            white-space: pre-wrap;
+                            margin: 30px 0;
+                        }
+                        .sender {
+                            text-align: right;
+                            margin-top: 40px;
+                            font-size: 1.2em;
+                        }
+                        .date {
+                            text-align: right;
+                            color: #666;
+                            margin-top: 10px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>💌 我的情书</h1>
+                    </div>
+                    <div class="recipient">致：${recipient}</div>
+                    <div class="letter-content">${letter}</div>
+                    <div class="sender">来自：${sender}</div>
+                    <div class="date">${new Date().toLocaleString('zh-CN')}</div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // 加载保存的情书
+        function loadSavedLetter() {
+            const saved = localStorage.getItem('loveLetter');
+            if (saved) {
+                const letterData = JSON.parse(saved);
+                document.getElementById('recipient').value = letterData.recipient || '';
+                document.getElementById('sender').value = letterData.sender || '';
+                document.getElementById('letter').value = letterData.letter || '';
+            }
+        }
+
+        // 页面加载时执行
+        window.addEventListener('DOMContentLoaded', () => {
+            createHearts();
+            loadSavedLetter();
+        });
+    </script>
+</body>
+</html>
